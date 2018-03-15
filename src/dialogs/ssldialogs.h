@@ -25,7 +25,7 @@
 
 #include <QSslError>
 
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
 
 class PropertyPanel;
 
@@ -120,6 +120,6 @@ private:
     QList<QSslCertificate> m_certificates;
 };
 
-#endif // !defined( QT_NO_OPENSSL )
+#endif // !defined( QT_NO_SSL )
 
 #endif

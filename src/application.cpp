@@ -76,7 +76,7 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv ),
     m_settings = new LocalSettings( locateDataFile( "settings.dat" ), this );
     m_bookmarks = new BookmarksStore( locateDataFile( "bookmarks.dat" ), this );
     m_credentials = new CredentialsStore( locateDataFile( "credentials.dat" ), this );
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
     m_certificates = new CertificatesStore( locateDataFile( "certificates.crt" ), this );
 #endif
 

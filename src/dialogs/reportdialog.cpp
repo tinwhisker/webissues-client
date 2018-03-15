@@ -34,8 +34,7 @@
 #include <QRadioButton>
 #include <QPushButton>
 #include <QDialogButtonBox>
-#include <QWebPage>
-#include <QWebFrame>
+#include <QWebEnginePage>
 #include <QPrintDialog>
 #include <QFileDialog>
 #include <QTextStream>
@@ -233,20 +232,20 @@ void ReportDialog::print()
 
     QString html = generateHtmlReport( false );
 
-    m_page = new QWebPage( this );
+    m_page = new QWebEnginePage( this );
 
-    connect( m_page->mainFrame(), SIGNAL( loadFinished( bool ) ), this, SLOT( printReady() ) );
+connect( m_page, SIGNAL( loadFinished( bool ) ), this, SLOT( printReady() ) );
 
-    m_page->mainFrame()->setHtml( html );
+    //m_page->setHtml( html );
 }
 
 void ReportDialog::printReady()
 {
     QPrinter* printer = application->printer();
 
-    m_page->mainFrame()->print( printer );
+    //m_page->print( printer, NULL );
 
-    m_page->deleteLater();
+    //m_page->deleteLater();
     m_page = NULL;
 
     QDialog::accept();
@@ -311,21 +310,21 @@ void ReportDialog::exportPdf()
 
     QString html = generateHtmlReport( false );
 
-    m_page = new QWebPage( this );
+    m_page = new QWebEnginePage( this );
 
-    connect( m_page->mainFrame(), SIGNAL( loadFinished( bool ) ), this, SLOT( pdfReady() ) );
+    connect( m_page, SIGNAL( loadFinished( bool ) ), this, SLOT( pdfReady() ) );
 
-    m_page->mainFrame()->setHtml( html );
+    //m_page->setHtml( html );
 }
 
 void ReportDialog::pdfReady()
 {
-    m_page->mainFrame()->print( m_pdfPrinter );
+    //m_page->print( m_pdfPrinter, NULL );
 
     delete m_pdfPrinter;
     m_pdfPrinter = NULL;
 
-    m_page->deleteLater();
+    //m_page->deleteLater();
     m_page = NULL;
 
     QDialog::accept();
@@ -341,11 +340,11 @@ void ReportDialog::showPreview()
 
     QString html = generateHtmlReport( false );
 
-    m_page = new QWebPage( this );
+    m_page = new QWebEnginePage( this );
 
-    connect( m_page->mainFrame(), SIGNAL( loadFinished( bool ) ), this, SLOT( previewReady() ) );
+    connect( m_page, SIGNAL( loadFinished( bool ) ), this, SLOT( previewReady() ) );
 
-    m_page->mainFrame()->setHtml( html );
+    //m_page->setHtml( html );
 }
 
 void ReportDialog::previewReady()
@@ -365,13 +364,13 @@ void ReportDialog::previewReady()
     if ( !list.isEmpty() )
         list.first()->trigger();
 
-    connect( &dialog, SIGNAL( paintRequested( QPrinter* ) ), m_page->mainFrame(), SLOT( print( QPrinter* ) ) );
+    connect( &dialog, SIGNAL( paintRequested( QPrinter* ) ), m_page, SLOT( print( QPrinter* ) ) );
 
     int result = dialog.exec();
 
     settings->setValue( "PrintPreviewGeometry", dialog.saveGeometry() );
 
-    m_page->deleteLater();
+    //m_page->deleteLater();
     m_page = NULL;
 
     if ( result == QDialog::Accepted )

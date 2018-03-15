@@ -38,7 +38,7 @@ class QModelIndex;
 class QUrl;
 class QFrame;
 class QSplitter;
-class QWebView;
+class QWebEngineView;
 
 /**
 * View for displaying details of an issue.
@@ -152,7 +152,7 @@ private:
     void addComment( const QString& tile, const QString& text );
 
 private:
-    QWebView* m_browser;
+    QWebEngineView* m_browser;
 
     FindBar* m_findBar;
 

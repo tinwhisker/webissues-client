@@ -23,7 +23,7 @@
 #include <QObject>
 #include <QSslCertificate>
 
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
 
 /**
 * Class for storing a list of SSL certificates.
@@ -71,6 +71,6 @@ private:
     QList<QSslCertificate> m_certificates;
 };
 
-#endif // !defined( QT_NO_OPENSSL )
+#endif // !defined( QT_NO_SSL )
 
 #endif

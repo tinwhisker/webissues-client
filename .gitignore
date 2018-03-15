@@ -11,3 +11,4 @@ config.pri
 configure-msvc.bat
 webissues.sln
 webissues.v12.suo
+.DS_Store

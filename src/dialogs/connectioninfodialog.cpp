@@ -91,7 +91,7 @@ void ConnectionInfoDialog::updateInformation()
 {
     m_serverPanel->setValue( "url", commandManager->serverUrl().toString() );
 
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
     m_certificatesButton->setEnabled( !commandManager->sslConfiguration().peerCertificateChain().isEmpty() );
 
     QSslCipher cipher = commandManager->sslConfiguration().sessionCipher();
@@ -116,7 +116,7 @@ void ConnectionInfoDialog::updateInformation()
 
 void ConnectionInfoDialog::viewCertificates()
 {
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
     SslCertificatesDialog dialog( this );
     dialog.setCertificates( commandManager->sslConfiguration().peerCertificateChain() );
     dialog.exec();

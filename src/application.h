@@ -116,7 +116,7 @@ public:
     */
     CredentialsStore* credentialsStore() const { return m_credentials; }
 
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
     /**
     * Return the certificates store.
     */
@@ -224,7 +224,7 @@ private:
     LocalSettings* m_settings;
     BookmarksStore* m_bookmarks;
     CredentialsStore* m_credentials;
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
     CertificatesStore* m_certificates;
 #endif
 

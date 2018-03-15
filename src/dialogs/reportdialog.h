@@ -24,7 +24,7 @@
 #include "models/issuedetailsgenerator.h"
 
 class QRadioButton;
-class QWebPage;
+class QWebEnginePage;
 class QPrinter;
 
 /**
@@ -157,7 +157,7 @@ private:
     QRadioButton* m_summaryButton;
     QRadioButton* m_fullReportButton;
 
-    QWebPage* m_page;
+    QWebEnginePage* m_page;
 
     QPrinter* m_pdfPrinter;
 };

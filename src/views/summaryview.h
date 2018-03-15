@@ -26,7 +26,7 @@
 
 class FindBar;
 
-class QWebView;
+class QWebEngineView;
 
 /**
 * View for displaying summary of a project.
@@ -113,7 +113,7 @@ private:
     void handleCommand( const QString& command );
 
 private:
-    QWebView* m_browser;
+    QWebEngineView* m_browser;
 
     FindBar* m_findBar;
 

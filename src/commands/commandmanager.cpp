@@ -57,7 +57,7 @@ CommandManager::CommandManager( QNetworkAccessManager* manager ) :
     connect( m_manager, SIGNAL( proxyAuthenticationRequired( const QNetworkProxy&, QAuthenticator* ) ),
         this, SLOT( proxyAuthenticationRequired( const QNetworkProxy&, QAuthenticator* ) ) );
 
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
     connect( m_manager, SIGNAL( sslErrors( QNetworkReply*, const QList<QSslError>& ) ),
         this, SLOT( handleSslErrors( QNetworkReply*, const QList<QSslError>& ) ) );
 #endif
@@ -364,7 +364,7 @@ void CommandManager::metaDataChanged()
     m_redirectionTarget = m_currentReply->attribute( QNetworkRequest::RedirectionTargetAttribute ).toUrl();
     m_contentType = m_currentReply->header( QNetworkRequest::ContentTypeHeader ).toByteArray();
     m_protocolVersion = m_currentReply->rawHeader( "X-WebIssues-Version" );
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
     m_sslConfiguration = m_currentReply->sslConfiguration();
 #endif
 
@@ -673,7 +673,7 @@ void CommandManager::handleAuthentication( int mode, const QString& hostName, QA
     authenticator->setPassword( password );
 }
 
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
 
 void CommandManager::handleSslErrors( QNetworkReply* reply, const QList<QSslError>& errors )
 {
@@ -710,4 +710,4 @@ void CommandManager::handleSslErrors( QNetworkReply* reply, const QList<QSslErro
     reply->ignoreSslErrors();
 }
 
-#endif // !defined( QT_NO_OPENSSL )
+#endif // !defined( QT_NO_SSL )

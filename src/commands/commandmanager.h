@@ -133,7 +133,7 @@ public:
     */
     QString errorMessage();
 
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
     /**
     * Return server's SSL configuration.
     */
@@ -172,14 +172,14 @@ private slots:
     void authenticationRequired( QNetworkReply* reply, QAuthenticator* authenticator );
     void proxyAuthenticationRequired( const QNetworkProxy& proxy, QAuthenticator* authenticator );
 
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
     void handleSslErrors( QNetworkReply* reply, const QList<QSslError>& errors );
 #endif
 
 private:
     QNetworkAccessManager* m_manager;
 
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
     QList<QSslCertificate> m_certificates;
 
     QSslConfiguration m_sslConfiguration;

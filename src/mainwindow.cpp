@@ -444,7 +444,7 @@ void MainWindow::connectionOpened()
     connect( m_view, SIGNAL( statusChanged( const QPixmap&, const QString&, int ) ), this, SLOT( showStatus( const QPixmap&, const QString&, int ) ) );
     connect( m_view, SIGNAL( summaryChanged( const QPixmap&, const QString& ) ), this, SLOT( showSummary( const QPixmap&, const QString& ) ) );
 
-#if !defined( QT_NO_OPENSSL )
+#if !defined( QT_NO_SSL )
     QSslCipher cipher = commandManager->sslConfiguration().sessionCipher();
     if ( !cipher.isNull() ) {
         m_encryptionLabel->setPixmap( IconLoader::pixmap( "edit-access" ) );

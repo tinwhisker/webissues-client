@@ -33,7 +33,7 @@
 #include <QComboBox>
 #include <QToolButton>
 #include <QLabel>
-#include <QWebView>
+#include <QWebEngineView>
 #include <QInputDialog>
 #include <QDesktopWidget>
 
@@ -296,13 +296,13 @@ void MarkupTextEdit::showPreview()
         QVBoxLayout* layout = new QVBoxLayout( m_previewWindow );
         layout->setMargin( 0 );
 
-        m_preview = new QWebView( m_previewWindow );
+        m_preview = new QWebEngineView( m_previewWindow );
         layout->addWidget( m_preview );
 
         m_preview->setContextMenuPolicy( Qt::NoContextMenu );
-        m_preview->page()->setLinkDelegationPolicy( QWebPage::DelegateAllLinks );
+        //m_preview->page()->setLinkDelegationPolicy( QWebEnginePage::DelegateAllLinks );
 
-        m_preview->setTextSizeMultiplier( application->textSizeMultiplier() );
+        //m_preview->setTextSizeMultiplier( application->textSizeMultiplier() );
 
         LocalSettings* settings = application->applicationSettings();
         if ( settings->contains( "PreviewWindowGeometry" ) ) {

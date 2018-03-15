@@ -164,7 +164,7 @@ void MacStyle::drawComplexControl( ComplexControl control, const QStyleOptionCom
                     bool checked = buttonState & State_On;
                     bool sunken = buttonState & State_Sunken;
                     if ( selected || checked || sunken ) {
-                        if ( sunken || selected && checked )
+                        if ( sunken || (selected && checked) )
                             drawHighlightFrameMac( painter, widget, option, buttonRect );
                         else if ( checked )
                             drawHighlightFrameMac( painter, widget, option, buttonRect );
@@ -179,7 +179,7 @@ void MacStyle::drawComplexControl( ComplexControl control, const QStyleOptionCom
                     if ( optionToolButton->subControls & SC_ToolButtonMenu ) {
                         QRect menuRect = subControlRect( control, option, SC_ToolButtonMenu, widget );
                         menuRect.adjust( -1, 0, 0, 0 );
-                        if ( sunken || optionToolButton->state & State_Sunken && optionToolButton->activeSubControls & SC_ToolButtonMenu )
+                        if ( sunken || ((optionToolButton->state & State_Sunken) && (optionToolButton->activeSubControls & SC_ToolButtonMenu)) )
                             drawHighlightFrameMac( painter, widget, option, menuRect );
                         else if ( selected )
                             drawHighlightFrameMac( painter, widget, option, menuRect );

@@ -27,7 +27,7 @@
 class InputTextEdit;
 
 class QComboBox;
-class QWebView;
+class QWebEngineView;
 
 class MarkupTextEdit : public QWidget
 {
@@ -88,7 +88,7 @@ private:
     QWidget* m_toolBar;
     QComboBox* m_comboBox;
 
-    QWebView* m_preview;
+    QWebEngineView* m_preview;
     QWidget* m_previewWindow;
 };
 

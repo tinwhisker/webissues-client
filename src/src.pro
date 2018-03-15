@@ -1,10 +1,10 @@
-include( ../config.pri )
+#include( ../config.pri )
 
 TEMPLATE = app
 TARGET   = webissues
 
 CONFIG  += qt
-QT      += widgets printsupport network xml sql webkit webkitwidgets
+QT      += widgets printsupport network xml sql webengine webenginewidgets #webkit webkitwidgets
 
 HEADERS += application.h \
            mainwindow.h

@@ -55,8 +55,8 @@
 #include <QScrollBar>
 #include <QPushButton>
 #include <QTimer>
-#include <QWebView>
-#include <QWebFrame>
+#include <QWebEngineView>
+#include <QWebEnginePage>
 
 IssueView::IssueView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     m_folderId( 0 ),
@@ -206,16 +206,16 @@ IssueView::IssueView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     mainLayout->setMargin( 0 );
     mainLayout->setSpacing( 0 );
 
-    m_browser = new QWebView( main );
+    m_browser = new QWebEngineView( main );
     m_browser->setContextMenuPolicy( Qt::CustomContextMenu );
-    m_browser->page()->setLinkDelegationPolicy( QWebPage::DelegateAllLinks );
+    //m_browser->page()->setLinkDelegationPolicy( QWebEnginePage::DelegateAllLinks );
 
     QPalette palette = m_browser->palette();
     palette.setBrush( QPalette::Inactive, QPalette::Highlight, palette.brush( QPalette::Active, QPalette::Highlight ) );
     palette.setBrush( QPalette::Inactive, QPalette::HighlightedText, palette.brush( QPalette::Active, QPalette::HighlightedText ) );
     m_browser->setPalette( palette );
 
-    m_browser->setTextSizeMultiplier( application->textSizeMultiplier() );
+    //m_browser->setTextSizeMultiplier( application->textSizeMultiplier() );
 
     mainLayout->addWidget( m_browser, 1 );
 
@@ -223,9 +223,9 @@ IssueView::IssueView( QObject* parent, QWidget* parentWidget ) : View( parent ),
         this, SLOT( historyContextMenu( const QPoint& ) ) );
     connect( m_browser, SIGNAL( linkClicked( const QUrl& ) ), this, SLOT( linkClicked( const QUrl& ) ) );
 
-    connect( m_browser->pageAction( QWebPage::Copy ), SIGNAL( changed() ), this, SLOT( updateActions() ) );
+    connect( m_browser->pageAction( QWebEnginePage::Copy ), SIGNAL( changed() ), this, SLOT( updateActions() ) );
 
-    connect( m_browser->page()->mainFrame(), SIGNAL( loadFinished( bool ) ), this, SLOT( scrollToAnchor() ) );
+    connect( m_browser->page(), SIGNAL( loadFinished( bool ) ), this, SLOT( scrollToAnchor() ) );
 
     m_findBar = new FindBar( main );
     m_findBar->setBoundWidget( m_browser );
@@ -344,7 +344,7 @@ void IssueView::updateAccess( Access access )
 void IssueView::gotoItem( int itemId )
 {
     if ( itemId == id() ) {
-        m_browser->page()->mainFrame()->setScrollPosition( QPoint( 0, 0 ) );
+        //m_browser->page()->setScrollPosition( QPoint( 0, 0 ) );
         return;
     }
 
@@ -371,7 +371,7 @@ void IssueView::updateActions()
     m_isFindEnabled = m_findBar->isFindEnabled();
 
     // NOTE: hasSelection() is currently broken and always returns true, so using this workaround
-    bool hasSelection = m_browser->pageAction( QWebPage::Copy )->isEnabled();
+    bool hasSelection = m_browser->pageAction( QWebEnginePage::Copy )->isEnabled();
 
     bool linkNotEmpty = !m_actionLink.isEmpty();
 
@@ -586,13 +586,13 @@ void IssueView::subscribe()
 void IssueView::copy()
 {
     if ( isEnabled() )
-        m_browser->triggerPageAction( QWebPage::Copy );
+        m_browser->triggerPageAction( QWebEnginePage::Copy );
 }
 
 void IssueView::selectAll()
 {
     if ( isEnabled() )
-        m_browser->triggerPageAction( QWebPage::SelectAll );
+        m_browser->triggerPageAction( QWebEnginePage::SelectAll );
 }
 
 void IssueView::find()
@@ -607,13 +607,13 @@ void IssueView::find()
 void IssueView::findText( const QString& text )
 {
     if ( isEnabled() )
-        findText( text, m_findBar->isCaseSensitive() ? QWebPage::FindCaseSensitively : 0 );
+        findText( text, m_findBar->isCaseSensitive() ? QWebEnginePage::FindCaseSensitively : 0 );
 }
 
 void IssueView::findNext()
 {
     if ( isEnabled() && m_isFindEnabled ) {
-        findText( m_findBar->text(), m_findBar->isCaseSensitive() ? QWebPage::FindCaseSensitively : 0 );
+        findText( m_findBar->text(), m_findBar->isCaseSensitive() ? QWebEnginePage::FindCaseSensitively : 0 );
         m_findBar->selectAll();
     }
 }
@@ -621,7 +621,7 @@ void IssueView::findNext()
 void IssueView::findPrevious()
 {
     if ( isEnabled() && m_isFindEnabled ) {
-        findText( m_findBar->text(), ( m_findBar->isCaseSensitive() ? QWebPage::FindCaseSensitively : 0 ) | QTextDocument::FindBackward );
+        findText( m_findBar->text(), ( m_findBar->isCaseSensitive() ? QWebEnginePage::FindCaseSensitively : 0 ) | QTextDocument::FindBackward );
         m_findBar->selectAll();
     }
 }
@@ -630,8 +630,8 @@ void IssueView::findText( const QString& text, int flags )
 {
     bool warn = false;
 
-    if ( !text.isEmpty() )
-        warn = !m_browser->findText( text, (QWebPage::FindFlags)flags | QWebPage::FindWrapsAroundDocument );
+    //if ( !text.isEmpty() )
+        //warn = !m_browser->findText( text, (QWebEnginePage::FindFlags)flags | QWebEnginePage::FindWrapsAroundDocument );
 
     m_findBar->show();
     m_findBar->setFocus();
@@ -757,7 +757,7 @@ void IssueView::populateDetails()
 
     QApplication::setOverrideCursor( Qt::WaitCursor );
 
-    QPoint pos = m_browser->page()->mainFrame()->scrollPosition();
+    QPointF pos = m_browser->page()->scrollPosition();
 
     IssueDetailsGenerator generator;
     generator.setIssue( id(), true, m_history );
@@ -768,7 +768,7 @@ void IssueView::populateDetails()
     m_loading = true;
     m_browser->setHtml( writer.toHtml() );
 
-    m_browser->page()->mainFrame()->setScrollPosition( pos );
+    //m_browser->page()->scrollPosition( pos );
 
     QStringList status;
     if ( m_history != IssueDetailsGenerator::OnlyFiles )
@@ -785,7 +785,7 @@ void IssueView::scrollToAnchor()
     m_loading = false;
 
     if ( !m_scrollAnchor.isEmpty() ) {
-        m_browser->page()->mainFrame()->scrollToAnchor( m_scrollAnchor );
+        //m_browser->page()->scrollToAnchor( m_scrollAnchor );
         m_scrollAnchor.clear();
     }
 }
@@ -820,8 +820,8 @@ bool IssueView::linkContextMenu( const QUrl& link, const QPoint& pos )
 
 void IssueView::historyContextMenu( const QPoint& pos )
 {
-    QWebHitTestResult result = m_browser->page()->mainFrame()->hitTestContent( pos );
-    QUrl link = result.linkUrl();
+    //QWebHitTestResult result = m_browser->page()->hitTestContent( pos );
+    QUrl link;// = result.linkUrl();
 
     if ( !link.isEmpty() ) {
         if ( linkContextMenu( link, m_browser->mapToGlobal( pos ) ) )
@@ -829,7 +829,7 @@ void IssueView::historyContextMenu( const QPoint& pos )
     }
 
     QString menuName;
-    if ( m_browser->pageAction( QWebPage::Copy )->isEnabled() )
+    if ( m_browser->pageAction( QWebEnginePage::Copy )->isEnabled() )
         menuName = "menuSelection";
     else
         menuName = "menuHistory";
@@ -999,5 +999,5 @@ void IssueView::handleAttachment( int fileId, AttachmentAction action )
 
 void IssueView::settingsChanged()
 {
-    m_browser->setTextSizeMultiplier( application->textSizeMultiplier() );
+    //m_browser->setTextSizeMultiplier( application->textSizeMultiplier() );
 }
