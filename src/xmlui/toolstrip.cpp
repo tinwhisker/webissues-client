@@ -224,7 +224,7 @@ void ToolStrip::childEvent( QChildEvent* e )
 static void drawSeparator( const QRect& rect, QPainter* painter, QWidget* widget )
 {
 #if ( QT_VERSION >= 0x040500 )
-    QStyleOptionFrameV3 option;
+    QStyleOptionFrame option;
     option.init( widget );
     option.frameShape = QFrame::VLine;
     option.state |= QStyle::State_Sunken;

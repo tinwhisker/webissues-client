@@ -12,3 +12,4 @@ configure-msvc.bat
 webissues.sln
 webissues.v12.suo
 .DS_Store
+webissues.pro.user

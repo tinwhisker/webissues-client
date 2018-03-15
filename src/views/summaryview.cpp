@@ -44,7 +44,8 @@
 #include <QKeyEvent>
 #include <QClipboard>
 #include <QWebEngineView>
-#include <QWebEnginePage>
+#include "wiwebenginepage.h"
+#include <QFontDatabase>
 
 SummaryView::SummaryView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     m_isFindEnabled( false )
@@ -144,6 +145,7 @@ SummaryView::SummaryView( QObject* parent, QWidget* parentWidget ) : View( paren
     mainLayout->setSpacing( 0 );
 
     m_browser = new QWebEngineView( main );
+    m_browser->setPage(new WIWebEnginePage( main ));
     m_browser->setContextMenuPolicy( Qt::CustomContextMenu );
     //m_browser->page()->setLinkDelegationPolicy( QWebEnginePage::DelegateAllLinks );
 
@@ -153,12 +155,18 @@ SummaryView::SummaryView( QObject* parent, QWidget* parentWidget ) : View( paren
     m_browser->setPalette( palette );
 
     //m_browser->setTextSizeMultiplier( application->textSizeMultiplier() );
+    QFontDatabase fontDataBase;
+    double newFontSize = application->textSizeMultiplier() / 1.234;
+    //m_browser->setFont( fontDataBase.font("Arial","",newFontSize) );
+    m_browser->page()->setZoomFactor(newFontSize);// setFont( fontDataBase.font("Arial","",newFontSize) );
+
 
     mainLayout->addWidget( m_browser, 1 );
 
     connect( m_browser, SIGNAL( customContextMenuRequested( const QPoint& ) ),
         this, SLOT( summaryContextMenu( const QPoint& ) ) );
-    connect( m_browser, SIGNAL( linkClicked( const QUrl& ) ), this, SLOT( linkClicked( const QUrl& ) ) );
+
+    connect( m_browser->page(), SIGNAL( linkClicked( const QUrl& ) ), this, SLOT( linkClicked( const QUrl& ) ));
 
     connect( m_browser->pageAction( QWebEnginePage::Copy ), SIGNAL( changed() ), this, SLOT( updateActions() ) );
 
@@ -360,14 +368,12 @@ void SummaryView::findPrevious()
 
 void SummaryView::findText( const QString& text, int flags )
 {
-    bool warn = false;
-
-    //if ( !text.isEmpty() )
-        //warn = !m_browser->findText( text, (QWebEnginePage::FindFlags)flags | QWebEnginePage::FindWrapsAroundDocument );
-
-    m_findBar->show();
-    m_findBar->setFocus();
-    m_findBar->showWarning( warn );
+    if ( !text.isEmpty() )
+        m_browser->findText( text, (QWebEnginePage::FindFlags)flags, [this](bool &warn){
+            m_findBar->show();
+            m_findBar->setFocus();
+            m_findBar->showWarning( warn );
+        });
 }
 
 bool SummaryView::eventFilter( QObject* obj, QEvent* e )

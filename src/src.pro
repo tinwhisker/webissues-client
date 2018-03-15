@@ -1,13 +1,12 @@
-#include( ../config.pri )
-
 TEMPLATE = app
 TARGET   = webissues
 
 CONFIG  += qt
-QT      += widgets printsupport network xml sql webengine webenginewidgets #webkit webkitwidgets
+QT      += widgets printsupport network xml sql webengine webenginewidgets
 
 HEADERS += application.h \
-           mainwindow.h
+           mainwindow.h \
+    wiwebenginepage.h
 
 SOURCES += application.cpp \
            main.cpp \
