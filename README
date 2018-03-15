@@ -1,11 +1,25 @@
---------------------------------------------------------------------------------
-This is the latest stable version of the WebIssues Desktop Client, recommended
-for production purposes. It is no longer under active development. The current
-development version can be found here: https://github.com/mimecorg/webissues.
---------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+This is a fork of the WebIssues Desktop Client. It's not recommended
+for production purposes. 
+The official development version can be found here: https://github.com/mimecorg/webissues.
+------------------------------------------------------------------------------------------
 
 WebIssues Desktop Client
 Version 1.1.5 (2017-05-17)
+Forked (2018-03-15)
+
+Forked version:
+- Updated to Qt 5.11
+
+Fork reason:
+- The official 1.1.2 build crashes on macOS 10.13.3+
+- My Qt version was greater than the source supported version, prompting an update.
+
+You could possibly just build the official source with Qt 5.5(?) or prior, and get
+a successful build, but that's not as fun.
+
+
+Original ReadMe:
 
 Desktop Client for the WebIssues team collaboration system.
 
